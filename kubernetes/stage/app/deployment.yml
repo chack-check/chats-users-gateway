@@ -21,15 +21,13 @@ spec:
           ports:
             - containerPort: 8000
               name: web
-            - containerPort: 9090
-              name: grc
           env:
             - name: APP_USERS_GRPC_HOST
-              value: "chack-users-service"
+              value: "diffaction-users-service"
             - name: APP_USERS_GRPC_PORT
               value: "9090"
             - name: APP_CHATS_GRPC_HOST
-              value: "chack-chats-service"
+              value: "diffaction-chats-service"
             - name: APP_CHATS_GRPC_PORT
               value: "9090"
             - name: APP_PORT
@@ -42,5 +40,5 @@ spec:
             - name: APP_SENTRY_DSN
               valueFrom:
                 secretKeyRef:
-                  name: chats-service-credentials
+                  name: chats-users-service-credentials
                   key: sentry_dsn
