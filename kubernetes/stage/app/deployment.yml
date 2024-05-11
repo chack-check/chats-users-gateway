@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: diffaction-chats-users-gateway-service-deployment
+  labels:
+    app: diffaction-chats-users-gateway-service
+    name: diffaction-chats-users-gateway-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: diffaction-chats-users-gateway-service
+  template:
+    metadata:
+      labels:
+        app: diffaction-chats-users-gateway-service
+    spec:
+      containers:
+        - name: diffaction-chats-users-gateway-service
+          image: artemowkin/diffaction-chats-users-gateway-service:latest
+          ports:
+            - containerPort: 8000
+              name: web
+            - containerPort: 9090
+              name: grc
+          env:
+            - name: APP_USERS_GRPC_HOST
+              value: "chack-users-service"
+            - name: APP_USERS_GRPC_PORT
+              value: "9090"
+            - name: APP_CHATS_GRPC_HOST
+              value: "chack-chats-service"
+            - name: APP_CHATS_GRPC_PORT
+              value: "9090"
+            - name: APP_PORT
+              value: "8000"
+            - name: APP_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: users-service-credentials
+                  key: secret_key
+            - name: APP_SENTRY_DSN
+              valueFrom:
+                secretKeyRef:
+                  name: chats-service-credentials
+                  key: sentry_dsn

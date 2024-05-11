@@ -1,0 +1,79 @@
+enum MessageType {
+  text
+  event
+  call
+  voice
+  circle
+}
+
+type SavedFile {
+  originalUrl: String!
+  originalFilename: String!
+  convertedUrl: String
+  convertedFilename: String
+}
+
+type Reaction {
+  content: String!
+  userId: Int!
+}
+
+type UserPermissionCategory {
+  code: String!
+  name: String!
+}
+
+type UserPermission {
+  name: String!
+  code: String!
+  category: UserPermissionCategory
+}
+
+type Message {
+	id: Int!
+  type: MessageType!
+	senderId: Int
+	chatId: Int!
+  content: String
+	voice: SavedFile
+	circle: SavedFile
+	replyToId: Int
+	readedBy: [Int!]
+  reactions: [Reaction!]
+  attachments: [SavedFile!]!
+  mentioned: [Int!]
+  datetime: String!
+}
+
+type User {
+  id: Int!
+  username: String!
+  phone: String
+  email: String
+  firstName: String!
+  lastName: String!
+  middleName: String
+  status: String
+  emailConfirmed: Boolean!
+  phoneConfirmed: Boolean!
+  avatar: SavedFile
+  permissions: [UserPermission!]!
+}
+
+type PaginatedMessagesWithUsers {
+  offset: Int!
+  limit: Int!
+  total: Int!
+  messages: [Message!]!
+  users: [User!]!
+}
+
+type ErrorResponse {
+  message: String!
+}
+
+union PaginatedMessagesWithUsersErrorResponse = PaginatedMessagesWithUsers | ErrorResponse
+
+type Query {
+  getChatMessages(chatId: Int!, offset: Int, limit: Int): PaginatedMessagesWithUsersErrorResponse!
+}

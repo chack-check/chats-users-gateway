@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: diffaction-chats-users-gateway-service
+spec:
+  selector:
+    app: diffaction-chats-users-gateway-service
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+      name: web
